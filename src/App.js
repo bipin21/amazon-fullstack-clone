@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import Header from './Header';
 import Home from './Home';
@@ -9,6 +9,20 @@ import { useStateValue } from './StateProvider';
 import { auth } from "./firebase";
 
 function App() {
+
+  useEffect(() => {
+    // will run only once when the app component loads
+    auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        // if user is logged in
+
+      }
+      else {
+        // user is logged out
+      }
+    })
+  }, []);
+
   return (
     <div className="App">
 
@@ -21,7 +35,6 @@ function App() {
             </Route>
             <Route path="/login">
               <Login />
-
             </Route>
             {/* Default root */}
             <Route path="/">
