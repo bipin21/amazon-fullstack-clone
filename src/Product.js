@@ -1,46 +1,66 @@
-import React from 'react'
-import './Product.css'
-import { useStateValue } from './StateProvider';
+import React from "react";
+import "./Product.css";
+import { useStateValue } from "./StateProvider";
+import { store } from "react-notifications-component";
 
 function Product({ id, title, image, price, rating }) {
+  const [{ basket }, dispatch] = useStateValue();
 
-    const [{basket}, dispatch] = useStateValue();
+  const addToBasket = () => {
+    // dispatch the item to data layer
+    dispatch({
+      type: "ADD_TO_BASKET",
+      item: {
+        id: id,
+        title: title,
+        image: image,
+        price: price,
+        rating: rating,
+      },
+    });
+    store.addNotification({
+      title: "Added successfully to the basket!",
+      message: title + " - $" + price,
+      type: "success",
+      insert: "top",
+      container: "bottom-right",
+      animationIn: ["animated", "fadeIn"],
+      animationOut: ["animated", "fadeOut"],
+      dismiss: {
+        duration: 3000,
+        onScreen: true,
+      },
+    });
+  };
 
-    const addToBasket = () => {
-        // dispatch the item to data layer
-        dispatch({
-            type: 'ADD_TO_BASKET',
-            item: {
-                id: id,
-                title: title,
-                image: image,
-                price: price,
-                rating: rating
-            },
-        });
-    }
+  return (
+    <div className="product">
+      <div className="product__info">
+        <p> {title} </p>
+        <p className="product__price">
+          <small>$</small>
+          <strong>{price}</strong>
+        </p>
+        <div className="product__rating">
+          <p>
+            {Array(rating)
+              .fill()
+              .map((_, i) => (
+                <span className="star" role="img" aria-label="star">
+                  ⭐
+                </span>
+              ))}
+          </p>
+        </div>
+      </div>
 
-    return (
-        <div className="product">
-            <div className="product__info">
-                <p className="product__title">{title}</p>
-                <p className="product__price">
-                    <small>$</small>
-                    <strong>{price}</strong>
-                </p>
-                <div className="product__rating">
-                    {
-                        [...Array(rating).keys()]
-                            .map((_, i) => (
-                                <p>⭐</p>
-                            ))
-                    }
-                </div>
-            </div>
-            <img src={image} className="product__image" />
-            <button onClick={addToBasket} >Add to basket</button>
-        </div >
-    )
+      <img src={image} alt="" />
+
+      <button className="fade" onClick={addToBasket}>
+        Add to Basket
+      </button>
+    </div>
+  );
 }
 
-export default Product
+export default Product;
