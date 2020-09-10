@@ -1,6 +1,7 @@
 export const initialState = {
     basket: [],
     user: null,
+    fadeOutAnimate: 1
 }
 // get basket total
 export const getBasketTotal = (basket) =>
@@ -25,16 +26,22 @@ const reducer = (state, action) => {
             //     basket: state.basket.filter(item => item.id !== action.id)
             // };
             const index = state.basket.findIndex(
-                (basketItem) => basketItem.id === action.id);
+                (basketItem) => basketItem.id === action.id
+            );
             let newBasket = [...state.basket];
+
             if (index >= 0) {
                 newBasket.splice(index, 1);
             } else {
-                console.warn(`Cant remove product (id: ${action.id}) as its not in the basket!`)
+                console.warn(
+                    `Cant remove product (id: ${action.id}) as its not in basket!`
+                )
             }
+
             return {
                 ...state,
-                basket: newBasket
+                basket: newBasket,
+                fadeOutAnimate: 0
             }
         default:
             return {
