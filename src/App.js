@@ -10,15 +10,25 @@ import { auth } from "./firebase";
 
 function App() {
 
+  const [{ }, dispatch] = useStateValue();
+
   useEffect(() => {
     // will run only once when the app component loads
     auth.onAuthStateChanged(authUser => {
       if (authUser) {
         // if user is logged in
 
+        dispatch({
+          type: 'SET_USER',
+          user: authUser
+        })
       }
       else {
         // user is logged out
+        dispatch({
+          type: 'SET_USER',
+          user: null
+        })
       }
     })
   }, []);
