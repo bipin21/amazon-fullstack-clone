@@ -4,7 +4,7 @@ import { useStateValue } from './StateProvider';
 import Fade from 'react-reveal/Fade';
 import { store } from 'react-notifications-component';
 
-function CheckoutProduct({ id, title, image, price, rating }) {
+function CheckoutProduct({ id, title, image, price, rating, hideButton }) {
     const [fadeOut, setFadeOut] = useState(0)
 
     const [{ basket }, dispatch] = useStateValue();
@@ -46,7 +46,9 @@ function CheckoutProduct({ id, title, image, price, rating }) {
                             ))
                     }
                 </div>
-                <button onClick={removeFromBasket}>Remove from Basket</button>
+                {!hideButton && (
+                    <button onClick={removeFromBasket}>Remove from Basket</button>
+                )}
             </div>
         </div>
         </Fade>
